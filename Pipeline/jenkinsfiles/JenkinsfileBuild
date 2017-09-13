@@ -1,8 +1,6 @@
 node('windows') {
     try {
 
-        utils = pwd() + "\\Pipeline\\utils" + "\\utils.groovy"
-
         buildPath = pwd() + "\\Pipeline\\build"
 
         def commitId = ""
@@ -16,7 +14,7 @@ node('windows') {
         }
         
         def workspacePath = "C:/Jenkins/workspace/BD.build/WebApplication1"
-        def repository = 'demo-local'
+        def artifactoryRepository = 'demo-local'
 
         stage('Preparation') {
             checkout scm
@@ -27,7 +25,6 @@ node('windows') {
 
         stage('Build') {
             // Execute build script 
-            utils.log('Hello from the log util')
         }
 
         stage('Archive') {
@@ -39,7 +36,7 @@ node('windows') {
                 "files": [
                     {
                         "pattern": "${buildPath}/../package-${env.BUILD_NUMBER}.zip",
-                        "target": "demo-local/T/",
+                        "target": "${artifactoryRepository}/T/",
                         "props": "commit.id=${commitId};commit.author.name=${commitAuthorName};commit.author.email=${commitAuthorEmail}"
                     }
                 ]
