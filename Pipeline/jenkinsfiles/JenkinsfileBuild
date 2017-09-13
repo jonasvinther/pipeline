@@ -7,7 +7,6 @@ node('windows') {
         def commitAuthorName = "none"
 
         def artifactoryServer = Artifactory.server('artifactory')
-        artifactory-url
 
         withCredentials([string(credentialsId: 'artifactory-url', variable: 'ARTIFACTORY_URL')]) {
                 def artifactoryApiPath = "http://${ARTIFACTORY_URL}/artifactory/api"
