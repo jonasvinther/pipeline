@@ -27,7 +27,7 @@ node('windows') {
         }
 
         stage('Archive') {
-            powershell(". '.\\build_scripts\\Archive.ps1' ${env.BUILD_NUMBER} ${buildPath}")
+            powershell(". '.\\hello.ps1")
         }
 
     }
