@@ -1,0 +1,42 @@
+node('windows') {
+    try {
+
+        buildPath = pwd() + "\\..\\build"
+
+        def commitId = ""
+        def commitAuthorName = "none"
+
+        def artifactoryServer = Artifactory.server('artifactory')
+        artifactory-url
+
+        withCredentials([
+            string(credentialsId: 'artifactory-url', variable: 'ARTIFACTORY_URL')) {
+                def artifactoryApiPath = "http://${ARTIFACTORY_URL}/artifactory/api"
+        }
+        
+        def workspacePath = "C:/Jenkins/workspace/BD.build/WebApplication1"
+        def repository = 'demo-local'
+
+        stage('Preparation') {
+            checkout scm
+            commitId = powershell(script: "git rev-parse HEAD", returnStdout: true).trim()
+            commitAuthorName = powershell(script: "git log -1 --format='%an' ${commitId}", returnStdout: true).trim()
+            commitAuthorEmail = powershell(script: "git log -1 --format='%ae' ${commitId}", returnStdout: true).trim()
+        }
+
+        stage('Build') {
+            // Execute build script 
+        }
+
+        stage('Archive') {
+            powershell(". '.\\..\\build_scripts\\Archive.ps1' ${env.BUILD_NUMBER} ${buildPath}")
+        }
+
+    }
+    catch (e) {
+        
+    } finally {
+        
+    }
+
+}
