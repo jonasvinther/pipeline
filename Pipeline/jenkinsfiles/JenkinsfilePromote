@@ -23,23 +23,24 @@ node('windows') {
         
     }
 
-    def generateArtifactoryAuthInfo() {
-        withCredentials([[
-            $class: 'UsernamePasswordMultiBinding', 
-            credentialsId: 'artifactory', 
-            usernameVariable: 'username', 
-            passwordVariable: 'password'
-        ]]) {
-            return powershell(
-                script: "[Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(('{0}:{1}' -f '${username}','${password}')))", returnStdout: true
-                ).trim()
-        }
-    }
+}
 
-    def moveArtifact(buildNumber, from, to) {
-        def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
-            
-        powershell(". '.\\build_scripts\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}")
-    }
 
+def generateArtifactoryAuthInfo() {
+    withCredentials([[
+        $class: 'UsernamePasswordMultiBinding', 
+        credentialsId: 'artifactory', 
+        usernameVariable: 'username', 
+        passwordVariable: 'password'
+    ]]) {
+        return powershell(
+            script: "[Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(('{0}:{1}' -f '${username}','${password}')))", returnStdout: true
+            ).trim()
+    }
+}
+
+def moveArtifact(buildNumber, from, to) {
+    def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
+        
+    powershell(". '.\\build_scripts\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}")
 }
