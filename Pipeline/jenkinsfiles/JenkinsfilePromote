@@ -8,6 +8,10 @@ node('windows') {
         def workspacePath = "C:/Jenkins/workspace/BD.build/WebApplication1"
         def artifactoryRepository = 'demo-local'
 
+        stage('Preparation') {
+            checkout scm
+        }
+
         stage('Promote artifact') {
             moveArtifact(23, 'T', 'S')
         }
