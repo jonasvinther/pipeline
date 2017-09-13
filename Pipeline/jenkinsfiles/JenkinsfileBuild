@@ -9,8 +9,7 @@ node('windows') {
         def artifactoryServer = Artifactory.server('artifactory')
         artifactory-url
 
-        withCredentials([
-            string(credentialsId: 'artifactory-url', variable: 'ARTIFACTORY_URL')) {
+        withCredentials([string(credentialsId: 'artifactory-url', variable: 'ARTIFACTORY_URL')]) {
                 def artifactoryApiPath = "http://${ARTIFACTORY_URL}/artifactory/api"
         }
         
