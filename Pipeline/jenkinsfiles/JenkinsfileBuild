@@ -5,6 +5,7 @@ node('windows') {
 
         def commitId = ""
         def commitAuthorName = "none"
+        def commitAuthorEmail = "none"
 
         def artifactoryServer = Artifactory.server('artifactory')
 
@@ -36,7 +37,7 @@ node('windows') {
                     {
                         "pattern": "${buildPath}/../package-${env.BUILD_NUMBER}.zip",
                         "target": "demo-local/T/",
-                        "props": "commit.id=${commitId};commit.author.name=${authorName};commit.author.email=${authorEmail}"
+                        "props": "commit.id=${commitId};commit.author.name=${commitAuthorName};commit.author.email=${commitAuthorEmail}"
                     }
                 ]
             }"""
