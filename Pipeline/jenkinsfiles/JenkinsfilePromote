@@ -41,6 +41,6 @@ def generateArtifactoryAuthInfo() {
 
 def moveArtifact(buildNumber, from, to) {
     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
-    echo artifactoryBase64AuthInfo
+    echo artifactoryApiPath
     powershell(". '.\\Pipeline\\build_scripts\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}")
 }
