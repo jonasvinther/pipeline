@@ -1,7 +1,7 @@
 node('windows') {
     try {
 
-        buildPath = pwd() + "\\..\\build"
+        buildPath = pwd() + "\\build"
 
         def commitId = ""
         def commitAuthorName = "none"
