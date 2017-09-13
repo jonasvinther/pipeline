@@ -1,6 +1,8 @@
 node('windows') {
     try {
 
+        utils = pwd() + "\\Pipeline\\utils" + "\\utils.groovy"
+
         buildPath = pwd() + "\\Pipeline\\build"
 
         def commitId = ""
@@ -25,6 +27,7 @@ node('windows') {
 
         stage('Build') {
             // Execute build script 
+            utils.log('Hello from the log util')
         }
 
         stage('Archive') {
