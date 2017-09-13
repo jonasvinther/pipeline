@@ -30,6 +30,21 @@ node('windows') {
             powershell(". '.\\Pipeline\\build_scripts\\Archive.ps1' ${env.BUILD_NUMBER} ${buildPath}")
         }
 
+        stage('Upload to artifactory') {
+            def artifactoryUploadSpec = """{
+                "files": [
+                    {
+                        "pattern": "${buildPath}/../package-${env.BUILD_NUMBER}.zip",
+                        "target": "demo-local/T/",
+                        "props": "commit.id=${commitId};commit.author.name=${authorName};commit.author.email=${authorEmail}"
+                    }
+                ]
+            }"""
+
+            def buildinfo = artifactoryServer.upload(artifactoryUploadSpec)
+            artifactoryServer.publishBuildInfo(buildinfo)
+        }
+
     }
     catch (e) {
         
