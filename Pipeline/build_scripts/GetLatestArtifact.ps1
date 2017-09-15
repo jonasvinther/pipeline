@@ -13,8 +13,6 @@ param(
     [string] $repository
 )
 
-$url = "$artifactoryApiPath/move/$repository/$from/package-$build_number.zip?to=/$repository/$to/package-$build_number.zip"
-
 $url = "$artifactoryApiPath/versions/$repository/$from?build.name=BD.build"
 
 Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $artifactoryBase64AuthInfo)} `
