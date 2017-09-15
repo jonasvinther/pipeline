@@ -48,5 +48,6 @@ def moveArtifact(buildNumber, from, to) {
 
 def getLatestArtifact($from) {
     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
+    echo "${from} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}"
     powershell(". '.\\Pipeline\\build_scripts\\GetLatestArtifact.ps1' ${from} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}")
 }
