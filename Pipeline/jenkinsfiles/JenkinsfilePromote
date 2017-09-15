@@ -13,7 +13,8 @@ node('windows') {
         }
 
         stage('Promote artifact') {
-            moveArtifact(23, 'T', 'S')
+            //moveArtifact(23, 'T', 'S')
+            getLatestArtifact('T')
         }
 
     }
@@ -43,4 +44,9 @@ def moveArtifact(buildNumber, from, to) {
     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
     echo "${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}"
     powershell(". '.\\Pipeline\\build_scripts\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}")
+}
+
+def getLatestArtifact($from) {
+    def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
+    powershell(". '.\\Pipeline\\build_scripts\\MoveArtifact.ps1' ${from} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}")
 }
