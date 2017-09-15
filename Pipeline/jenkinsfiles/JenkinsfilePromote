@@ -19,7 +19,7 @@ node('windows') {
 
     }
     catch (e) {
-        
+        echo e
     } finally {
         
     }
