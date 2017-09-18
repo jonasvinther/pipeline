@@ -33,13 +33,20 @@ node('windows') {
                 ]
             }"""
             artifactoryServer.download(downloadSpec)
+        }
 
+        stage('Expand archive') {
             def buildPath = pwd() + "\\Pipeline"
             powershell(". '.\\Pipeline\\build_scripts\\ExpandArchive.ps1' ${artifact_version} ${buildPath}")
         }
 
         stage('Deploy artifact') {
             // Deploy to env server
+            powershell(". '.\\Pipeline\\build_scripts\\deploy.ps1' ${artifact_version} ${buildPath}")
+        }
+
+        stage('Integraiton test') {
+            
         }
 
         stage('Promote artifact') {
