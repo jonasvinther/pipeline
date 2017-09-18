@@ -13,10 +13,10 @@ node('windows') {
         }
 
         stage('Get latest artifact') {
-            // def artifact_version = getLatestArtifactVersion('S')
+            def artifact_version = getLatestArtifactVersion('S')
 
-            def externalMethod = load(pwd() + "\\Pipeline\\utils\\utils.groovy")
-            def artifact_version = externalMethod.getLatestArtifactVersion('S')
+            //def externalMethod = load(pwd() + "\\Pipeline\\utils\\utils.groovy")
+            //def artifact_version = externalMethod.getLatestArtifactVersion('S')
 
             echo "Artifact: ${artifact_version}"
         }
