@@ -33,6 +33,9 @@ node('windows') {
                 ]
             }"""
             artifactoryServer.download(downloadSpec)
+
+            def buildPath = pwd() + "\\Pipeline"
+            powershell(". '.\\Pipeline\\build_scripts\\ExpandArchive.ps1' ${artifact_version} ${buildPath}")
         }
 
         stage('Deploy artifact') {

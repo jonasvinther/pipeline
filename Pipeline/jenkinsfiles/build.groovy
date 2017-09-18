@@ -28,7 +28,7 @@ node('windows') {
         }
 
         stage('Archive') {
-            powershell(". '.\\Pipeline\\build_scripts\\Archive.ps1' ${env.BUILD_NUMBER} ${buildPath}")
+            powershell(". '.\\Pipeline\\build_scripts\\CompressArchive.ps1' ${env.BUILD_NUMBER} ${buildPath}")
         }
 
         stage('Upload to artifactory') {
