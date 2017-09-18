@@ -14,8 +14,8 @@ node('windows') {
 
         stage('Promote artifact') {
             // Flyt kun artifact til ny mappe hvis deploy + test er gået godt
-            moveArtifact(27, 'T', 'S')
-            //getLatestArtifact('T')
+            //moveArtifact(27, 'T', 'S')
+            getLatestArtifact('S')
         }
 
     }
