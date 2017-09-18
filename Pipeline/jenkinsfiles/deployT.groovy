@@ -28,7 +28,7 @@ node('windows') {
                 "files": [
                 {
                     "pattern": "${artifactoryRepository}/S/package-${artifact_version}.zip",
-                    "target": "test/"
+                    "target": "Pipeline/artifacts/"
                     }
                 ]
             }"""
