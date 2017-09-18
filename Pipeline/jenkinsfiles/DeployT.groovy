@@ -59,7 +59,7 @@ def moveArtifact(buildNumber, from, to) {
     powershell(". '.\\Pipeline\\build_scripts\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}")
 }
 
-// def getLatestArtifactVersion(from) {
-//     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
-//     return powershell(script: ". '.\\Pipeline\\build_scripts\\GetLatestArtifact.ps1' ${from} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}", returnStdout: true).trim()
-// }
+def getLatestArtifactVersion(from) {
+    def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
+    return powershell(script: ". '.\\Pipeline\\build_scripts\\GetLatestArtifact.ps1' ${from} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}", returnStdout: true).trim()
+}
