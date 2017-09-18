@@ -42,6 +42,8 @@ node('windows') {
 
         stage('Deploy artifact') {
             // Deploy to env server
+            def buildPath = pwd() + "\\Pipeline"
+            echo buildPath
             powershell(". '.\\Pipeline\\build_scripts\\deploy.ps1' ${artifact_version} ${buildPath}")
         }
 
