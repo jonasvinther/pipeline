@@ -7,18 +7,32 @@ node('windows') {
         
         def workspacePath = "C:/Jenkins/workspace/BD.build/WebApplication1"
         artifactoryRepository = 'demo-local'
+        def artifactoryServer = Artifactory.server('artifactory')
+        def artifact_version = 0
 
         stage('Preparation') {
             checkout scm
         }
 
         stage('Get latest artifact') {
-            def artifact_version = getLatestArtifactVersion('S')
+            artifact_version = getLatestArtifactVersion('S')
 
             //def externalMethod = load(pwd() + "\\Pipeline\\utils\\utils.groovy")
             //def artifact_version = externalMethod.getLatestArtifactVersion('S')
 
             echo "Artifact: ${artifact_version}"
+        }
+
+        stage('Download artifact') {
+            def downloadSpec = """{
+                "files": [
+                {
+                    "pattern": "${artifactoryRepository}/S/package-${artifact_version}.zip",
+                    "target": "test/"
+                    }
+                ]
+            }"""
+            artifactoryServer.download(downloadSpec)
         }
 
         stage('Deploy artifact') {
