@@ -13,7 +13,7 @@ param(
     [string] $repository
 )
 
-$url = "$artifactoryApiPath/versions/_any/?build.name=BD.build"
+$url = "$artifactoryApiPath/versions/$repository/$from?listFiles=1"
 
 Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $artifactoryBase64AuthInfo)} `
     -Method GET -UseBasicParsing `

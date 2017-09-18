@@ -37,7 +37,7 @@ node('windows') {
                     {
                         "pattern": "${buildPath}/../package-${env.BUILD_NUMBER}.zip",
                         "target": "${artifactoryRepository}/T/",
-                        "props": "commit.id=${commitId};commit.author.name=${commitAuthorName};commit.author.email=${commitAuthorEmail}"
+                        "props": "commit.id=${commitId};commit.author.name=${commitAuthorName};commit.author.email=${commitAuthorEmail};version=${env.BUILD_NUMBER}"
                     }
                 ]
             }"""
