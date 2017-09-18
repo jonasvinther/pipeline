@@ -13,11 +13,7 @@ param(
     [string] $repository
 )
 
-echo "$from $artifactoryBase64AuthInfo $artifactoryApiPath $repository"
-
 $url = "$artifactoryApiPath/versions/$repository/$from"
-
-echo $url
 
 $artifact_info = Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $artifactoryBase64AuthInfo)} `
     -Method GET -UseBasicParsing `
