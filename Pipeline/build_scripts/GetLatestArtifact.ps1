@@ -19,6 +19,8 @@ $url = "$artifactoryApiPath/versions/$repository/$from"
 
 echo $url
 
-Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $artifactoryBase64AuthInfo)} `
+$artifact_info = Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $artifactoryBase64AuthInfo)} `
     -Method GET -UseBasicParsing `
     -Uri $url
+
+return $artifact_info.version
