@@ -15,7 +15,7 @@ param(
 
 echo "$from $artifactoryBase64AuthInfo $artifactoryApiPath $repository"
 
-$url = "$artifactoryApiPath/versions/$repository/$from?listFiles=1"
+$url = "$artifactoryApiPath/versions/$repository/$from"
 
 echo $url
 
