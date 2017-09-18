@@ -12,12 +12,22 @@ node('windows') {
             checkout scm
         }
 
+        stage('Get latest artifact') {
+            // def artifact_version = getLatestArtifactVersion('S')
+
+            def externalMethod = load(pwd() + "\\Pipeline\\utils\\utils.groovy")
+            def artifact_version = externalMethod.getLatestArtifactVersion('S')
+
+            echo "Artifact: ${artifact_version}"
+        }
+
+        stage('Deploy artifact') {
+            // Deploy to env server
+        }
+
         stage('Promote artifact') {
             // Flyt kun artifact til ny mappe hvis deploy + test er gået godt
             //moveArtifact(27, 'T', 'S')
-            def artifact_version = getLatestArtifact('S')
-
-            echo "Artifact: ${artifact_version}"
         }
 
     }
@@ -49,7 +59,7 @@ def moveArtifact(buildNumber, from, to) {
     powershell(". '.\\Pipeline\\build_scripts\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}")
 }
 
-def getLatestArtifact(from) {
-    def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
-    return powershell(script: ". '.\\Pipeline\\build_scripts\\GetLatestArtifact.ps1' ${from} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}", returnStdout: true).trim()
-}
+// def getLatestArtifactVersion(from) {
+//     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
+//     return powershell(script: ". '.\\Pipeline\\build_scripts\\GetLatestArtifact.ps1' ${from} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}", returnStdout: true).trim()
+// }
