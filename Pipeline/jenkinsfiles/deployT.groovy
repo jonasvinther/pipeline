@@ -104,7 +104,7 @@ def moveArtifact(buildNumber, from, to) {
     powershell(". '${buildScriptPath}\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryUrl} ${artifactoryRepository}")
 }
 
-def tmpLatestArtifact($url) {
+def tmpLatestArtifact(url) {
     return powershell(script: ". '${buildScriptPath}\\artifactory.ps1' 'GET' ${artifactoryAuth} ${url}")
 }
 
