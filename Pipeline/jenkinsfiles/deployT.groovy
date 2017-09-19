@@ -9,7 +9,7 @@ node('windows') {
         artifactoryRepository = 'demo-local'
 
         def artifactoryServer = Artifactory.server('artifactory')
-        def artifact_version = 0
+        def artifactVersion = 0
         def from = 'Builds'
         def to = 'T'
 
@@ -18,27 +18,27 @@ node('windows') {
         }
 
         stage('Get latest artifact') {
-            artifact_version = getLatestArtifactVersion(from)
-            def latestT = getLatestArtifactVersion(to)
+            artifactVersion = getLatestArtifactVersion(from)
+            def runningArtifactInT = getLatestArtifactVersion(to)
 
-            if(artifact_version <= latestT) {
+            // Validate that artifactVersion from Builds is newer than the one in T
+            if(artifactVersion <= latestT) {
                 currentBuild.result = 'ABORTED'
-                def error_msg = "The given artifact(ver. ${artifact_version}) is older than the current running artifact(ver. ${latestT})"
-                echo error_msg
-                error(error_msg)
+                def errorMsg = "The given artifact(ver. ${artifactVersion}) is older than the current running artifact(ver. ${runningArtifactInT})"
+                echo errorMsg
+                error(errorMsg)
             }
-            // We should validate that artifact_version from Builds is newer than the one in T
 
             //def externalMethod = load(pwd() + "\\Pipeline\\utils\\utils.groovy")
-            //def artifact_version = externalMethod.getLatestArtifactVersion('S')
-            // echo "Artifact: ${artifact_version}"
+            //def artifactVersion = externalMethod.getLatestArtifactVersion('S')
+            // echo "Artifact: ${artifactVersion}"
         }
 
         stage('Download artifact') {
             def downloadSpec = """{
                 "files": [
                 {
-                    "pattern": "${artifactoryRepository}/${from}/package-${artifact_version}.zip",
+                    "pattern": "${artifactoryRepository}/${from}/package-${artifactVersion}.zip",
                     "target": "Pipeline/artifacts/"
                     }
                 ]
@@ -48,18 +48,18 @@ node('windows') {
 
         stage('Expand archive') {
             def buildPath = pwd() + "\\Pipeline"
-            powershell(". '${buildScriptPath}\\ExpandArchive.ps1' ${artifact_version} ${buildPath} ${from}")
+            powershell(". '${buildScriptPath}\\ExpandArchive.ps1' ${artifactVersion} ${buildPath} ${from}")
         }
 
         stage('Select env files') {
             def buildPath = pwd() + "\\Pipeline"
-            powershell(". '${buildScriptPath}\\SetupEnv.ps1' ${artifact_version} ${buildPath} ${from} ${to}")
+            powershell(". '${buildScriptPath}\\SetupEnv.ps1' ${artifactVersion} ${buildPath} ${from} ${to}")
         }
 
         stage('Deploy artifact') {
             // Deploy to env server
             def buildPath = pwd() + "\\Pipeline"
-            powershell(". '${buildScriptPath}\\Deploy.ps1' ${artifact_version} ${buildPath} ${from}")
+            powershell(". '${buildScriptPath}\\Deploy.ps1' ${artifactVersion} ${buildPath} ${from}")
         }
 
         stage('Integraiton test') {
@@ -68,7 +68,7 @@ node('windows') {
 
         stage('Promote artifact') {
             // Flyt kun artifact til ny mappe hvis deploy + test er gået godt
-            moveArtifact(artifact_version, from, to)
+            moveArtifact(artifactVersion, from, to)
         }
 
     }
