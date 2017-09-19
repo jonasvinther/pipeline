@@ -4,9 +4,10 @@ node('windows') {
         artifactoryApiPath = withCredentials([string(credentialsId: 'artifactory-url', variable: 'ARTIFACTORY_URL')]) {
             return "http://${ARTIFACTORY_URL}/artifactory/api"
         }
-        
+
+        buildScriptPath = pwd() + "\\Pipeline\\build_scripts"
         artifactoryRepository = 'demo-local'
-        def workspacePath = "C:/Jenkins/workspace/BD.build/WebApplication1"
+
         def artifactoryServer = Artifactory.server('artifactory')
         def artifact_version = 0
         def from = 'Builds'
@@ -38,18 +39,18 @@ node('windows') {
 
         stage('Expand archive') {
             def buildPath = pwd() + "\\Pipeline"
-            powershell(". '.\\Pipeline\\build_scripts\\ExpandArchive.ps1' ${artifact_version} ${buildPath} ${from}")
+            powershell(". '${buildScriptPath}\\ExpandArchive.ps1' ${artifact_version} ${buildPath} ${from}")
         }
 
         stage('Select env files') {
             def buildPath = pwd() + "\\Pipeline"
-            powershell(". '.\\Pipeline\\build_scripts\\SetupEnv.ps1' ${artifact_version} ${buildPath} ${from} ${to}")
+            powershell(". '${buildScriptPath}\\SetupEnv.ps1' ${artifact_version} ${buildPath} ${from} ${to}")
         }
 
         stage('Deploy artifact') {
             // Deploy to env server
             def buildPath = pwd() + "\\Pipeline"
-            powershell(". '.\\Pipeline\\build_scripts\\Deploy.ps1' ${artifact_version} ${buildPath} ${from}")
+            powershell(". '${buildScriptPath}\\Deploy.ps1' ${artifact_version} ${buildPath} ${from}")
         }
 
         stage('Integraiton test') {
@@ -86,10 +87,10 @@ def generateArtifactoryAuthInfo() {
 
 def moveArtifact(buildNumber, from, to) {
     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
-    powershell(". '.\\Pipeline\\build_scripts\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}")
+    powershell(". '${buildScriptPath}\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}")
 }
 
 def getLatestArtifactVersion(from) {
     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
-    return powershell(script: ". '.\\Pipeline\\build_scripts\\GetLatestArtifact.ps1' ${from} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}", returnStdout: true).trim()
+    return powershell(script: ". '${buildScriptPath}\\GetLatestArtifact.ps1' ${from} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}", returnStdout: true).trim()
 }
