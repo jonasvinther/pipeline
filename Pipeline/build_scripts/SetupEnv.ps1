@@ -15,4 +15,4 @@ param(
     [string] $to
 )
 
-Copy-Item $build_path\artifacts\$from\package-$build_number\config\$to* $build_path\artifacts\$from\package-$build_number\project -Force
+Copy-Item $build_path\artifacts\$from\package-$build_number\config\$to\* $build_path\artifacts\$from\package-$build_number\project\ -Force
