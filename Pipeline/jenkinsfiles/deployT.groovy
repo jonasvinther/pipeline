@@ -39,7 +39,7 @@ node('windows') {
 
         stage('Expand archive') {
             def buildPath = pwd() + "\\Pipeline"
-            powershell(". '.\\Pipeline\\build_scripts\\ExpandArchive.ps1' ${artifact_version} ${buildPath}, ${from}")
+            powershell(". '.\\Pipeline\\build_scripts\\ExpandArchive.ps1' ${artifact_version} ${buildPath} ${from}")
         }
 
         stage('Deploy artifact') {
