@@ -22,7 +22,7 @@ node('windows') {
             def runningArtifactInT = getLatestArtifactVersion(to)
 
             // Validate that artifactVersion from Builds is newer than the one in T
-            if(artifactVersion <= latestT) {
+            if(artifactVersion <= runningArtifactInT) {
                 currentBuild.result = 'ABORTED'
                 def errorMsg = "The given artifact(ver. ${artifactVersion}) is older than the current running artifact(ver. ${runningArtifactInT})"
                 echo errorMsg
