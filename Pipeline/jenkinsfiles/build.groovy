@@ -11,12 +11,6 @@ node('windows') {
         def artifactoryServer = Artifactory.server('artifactory')
         def artifactoryRepository = 'demo-local'
 
-        // withCredentials([string(credentialsId: 'artifactory-url', variable: 'ARTIFACTORY_URL')]) {
-        //         def artifactoryApiPath = "http://${ARTIFACTORY_URL}/artifactory/api"
-        // }
-        
-        // def workspacePath = "C:/Jenkins/workspace/BD.build/WebApplication1"
-
         stage('Preparation') {
             checkout scm
             commitId = powershell(script: "git rev-parse HEAD", returnStdout: true).trim()
