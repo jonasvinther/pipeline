@@ -5,8 +5,8 @@ node('windows') {
             return "http://${ARTIFACTORY_URL}/artifactory/api"
         }
         
-        def workspacePath = "C:/Jenkins/workspace/BD.build/WebApplication1"
         artifactoryRepository = 'demo-local'
+        def workspacePath = "C:/Jenkins/workspace/BD.build/WebApplication1"
         def artifactoryServer = Artifactory.server('artifactory')
         def artifact_version = 0
         def from = 'Builds'
@@ -21,8 +21,7 @@ node('windows') {
 
             //def externalMethod = load(pwd() + "\\Pipeline\\utils\\utils.groovy")
             //def artifact_version = externalMethod.getLatestArtifactVersion('S')
-
-            echo "Artifact: ${artifact_version}"
+            // echo "Artifact: ${artifact_version}"
         }
 
         stage('Download artifact') {
@@ -42,10 +41,14 @@ node('windows') {
             powershell(". '.\\Pipeline\\build_scripts\\ExpandArchive.ps1' ${artifact_version} ${buildPath} ${from}")
         }
 
+        stage('Select env files') {
+            def buildPath = pwd() + "\\Pipeline"
+            powershell(". '.\\Pipeline\\build_scripts\\SetupEnv.ps1' ${artifact_version} ${buildPath} ${from}")
+        }
+
         stage('Deploy artifact') {
             // Deploy to env server
             def buildPath = pwd() + "\\Pipeline"
-            echo buildPath
             powershell(". '.\\Pipeline\\build_scripts\\Deploy.ps1' ${artifact_version} ${buildPath} ${from}")
         }
 
@@ -83,7 +86,6 @@ def generateArtifactoryAuthInfo() {
 
 def moveArtifact(buildNumber, from, to) {
     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
-    echo "${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}"
     powershell(". '.\\Pipeline\\build_scripts\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}")
 }
 

@@ -11,4 +11,4 @@ param(
     [string] $from
 )
 
-Copy-Item $build_path\config\$from\* $build_path\project\ -Force
+Copy-Item $build_path\artifacts\$from\package-$build_number\config\* $build_path\artifacts\$from\package-$build_number -Force
