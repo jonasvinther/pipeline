@@ -110,5 +110,5 @@ def tmpLatestArtifact(url) {
 
 def getLatestArtifactVersion(from) {
     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
-    return powershell(script: ". '${buildScriptPath}\\GetLatestArtifact.ps1' ${from} ${artifactoryBase64AuthInfo} ${artifactoryUrl} ${artifactoryRepository}", returnStdout: true).trim()
+    return powershell(script: ". '${buildScriptPath}\\GetLatestArtifact.ps1' ${from} ${artifactoryBase64AuthInfo}", returnStdout: true).trim()
 }
