@@ -19,6 +19,8 @@ node('windows') {
 
         stage('Get latest artifact') {
             artifact_version = getLatestArtifactVersion(from)
+            echo getLatestArtifactVersion(to)
+            // We should validate that artifact_version from Builds is newer than the one in T
 
             //def externalMethod = load(pwd() + "\\Pipeline\\utils\\utils.groovy")
             //def artifact_version = externalMethod.getLatestArtifactVersion('S')
