@@ -9,6 +9,7 @@ node('windows') {
         artifactoryRepository = 'demo-local'
 
         def artifactoryServer = Artifactory.server('artifactory')
+        def artifactoryAuth = generateArtifactoryAuthInfo()
         def artifactVersion = 0
         def from = 'Builds'
         def to = 'T'
@@ -71,7 +72,6 @@ node('windows') {
             // moveArtifact(artifactVersion, from, to)
             def url = "${artifactoryUrl}/move/${artifactoryRepository}/${from}/package-${artifactVersion}.zip?to=/${artifactoryRepository}/${to}/package-${artifactVersion}.zip"
 
-            def artifactoryAuth = generateArtifactoryAuthInfo()
             powershell(". '${buildScriptPath}\\artifactory.ps1' 'POST' ${artifactoryAuth} ${url}")
         }
 
