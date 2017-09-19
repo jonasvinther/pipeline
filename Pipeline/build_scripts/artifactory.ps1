@@ -10,6 +10,8 @@ param(
     [string] $url
 )
 
+ech "$requestType $auth $url"
+
 Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $auth)} `
     -Method $requestType -UseBasicParsing `
     -Uri $url
