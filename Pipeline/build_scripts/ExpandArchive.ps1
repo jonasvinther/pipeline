@@ -8,7 +8,7 @@ param(
 
     [Parameter(Position=2)]
     [ValidateSet('P','S','T','Builds')]
-    [string] $from,
+    [string] $from
 )
 
 Expand-Archive -Path $build_path\artifacts\$from\package-$build_number.zip -DestinationPath $build_path\artifacts\$from\package-$build_number
