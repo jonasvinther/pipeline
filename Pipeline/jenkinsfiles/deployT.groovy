@@ -72,6 +72,7 @@ node('windows') {
 
             def artifactoryAuth = generateArtifactoryAuthInfo()
             def url = "${artifactoryUrl}/move/${repository}/${from}/package-${artifactVersion}.zip?to=/${repository}/${to}/package-${artifactVersion}.zip"
+            echo url
             powershell(". '${buildScriptPath}\\artifactory.ps1' 'POST' ${artifactoryAuth} ${url}")
         }
 

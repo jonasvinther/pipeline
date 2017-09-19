@@ -10,6 +10,7 @@ param(
     [string] $url
 )
 
+echo "Test!!"
 echo "$requestType $auth $url"
 
 Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $auth)} `
