@@ -1,7 +1,7 @@
 node('windows') {
     try {
 
-        artifactoryApiPath = withCredentials([string(credentialsId: 'artifactory-url', variable: 'ARTIFACTORY_URL')]) {
+        artifactoryUrl = withCredentials([string(credentialsId: 'artifactory-url', variable: 'ARTIFACTORY_URL')]) {
             return "http://${ARTIFACTORY_URL}/artifactory/api"
         }
 
@@ -68,7 +68,11 @@ node('windows') {
 
         stage('Promote artifact') {
             // Flyt kun artifact til ny mappe hvis deploy + test er gået godt
-            moveArtifact(artifactVersion, from, to)
+            // moveArtifact(artifactVersion, from, to)
+
+            def artifactoryAuth = generateArtifactoryAuthInfo()
+            def url = "${artifactoryUrl}/move/${repository}/${from}/package-${artifactVersion}.zip?to=/${repository}/${to}/package-${artifactVersion}.zip"
+            powershell(". ${buildScriptPath}\\artifactory.ps1 'POST' ${artifactoryAuth} ${url}")
         }
 
     }
@@ -96,10 +100,11 @@ def generateArtifactoryAuthInfo() {
 
 def moveArtifact(buildNumber, from, to) {
     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
-    powershell(". '${buildScriptPath}\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}")
+    powershell(". '${buildScriptPath}\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryUrl} ${artifactoryRepository}")
 }
+
 
 def getLatestArtifactVersion(from) {
     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
-    return powershell(script: ". '${buildScriptPath}\\GetLatestArtifact.ps1' ${from} ${artifactoryBase64AuthInfo} ${artifactoryApiPath} ${artifactoryRepository}", returnStdout: true).trim()
+    return powershell(script: ". '${buildScriptPath}\\GetLatestArtifact.ps1' ${from} ${artifactoryBase64AuthInfo} ${artifactoryUrl} ${artifactoryRepository}", returnStdout: true).trim()
 }
