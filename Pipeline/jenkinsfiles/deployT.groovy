@@ -7,9 +7,9 @@ node('windows') {
 
         buildScriptPath = pwd() + "\\Pipeline\\build_scripts"
         artifactoryRepository = 'demo-local'
+        artifactoryAuth = generateArtifactoryAuthInfo()
 
         def artifactoryServer = Artifactory.server('artifactory')
-        def artifactoryAuth = generateArtifactoryAuthInfo()
         def artifactVersion = 0
         def from = 'Builds'
         def to = 'T'
@@ -19,6 +19,7 @@ node('windows') {
         }
 
         stage('Get latest artifact') {
+            echo tmpLatestArtifact("${artifactoryUrl}/versions/${artifactoryRepository}/${from}")
             artifactVersion = getLatestArtifactVersion(from)
             def runningArtifactInT = getLatestArtifactVersion(to)
 
@@ -103,6 +104,9 @@ def moveArtifact(buildNumber, from, to) {
     powershell(". '${buildScriptPath}\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryUrl} ${artifactoryRepository}")
 }
 
+def tmpLatestArtifact($url) {
+    return powershell(script: ". '${buildScriptPath}\\artifactory.ps1' 'GET' ${artifactoryAuth} ${url}")
+}
 
 def getLatestArtifactVersion(from) {
     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
