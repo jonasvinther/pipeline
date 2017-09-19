@@ -46,7 +46,7 @@ node('windows') {
             // Deploy to env server
             def buildPath = pwd() + "\\Pipeline"
             echo buildPath
-            powershell(". '.\\Pipeline\\build_scripts\\Deploy.ps1' ${artifact_version} ${buildPath}")
+            powershell(". '.\\Pipeline\\build_scripts\\Deploy.ps1' ${artifact_version} ${buildPath} ${from}")
         }
 
         stage('Integraiton test') {
