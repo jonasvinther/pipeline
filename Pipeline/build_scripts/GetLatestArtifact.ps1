@@ -7,7 +7,7 @@ param(
     [string] $artifactoryBase64AuthInfo
 )
 
-. .\..\config.ps1
+. ..\config.ps1
 
 $url = "$artifactoryUrl/versions/$artifactoryRepository/$from"
 
