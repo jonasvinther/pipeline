@@ -33,7 +33,7 @@ node('windows') {
         }
 
         stage('Compress archive') {
-            powershell(". '.${buildScriptPath}\\CompressArchive.ps1' ${env.BUILD_NUMBER} ${buildPath}")
+            powershell(". '${buildScriptPath}\\CompressArchive.ps1' ${env.BUILD_NUMBER} ${buildPath}")
         }
 
         stage('Upload to artifactory') {
