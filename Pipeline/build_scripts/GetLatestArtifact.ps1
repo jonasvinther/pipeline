@@ -7,12 +7,14 @@ param(
     [string] $artifactoryBase64AuthInfo
 )
 
-. ./config.ps1
+echo pwd
 
-$url = "$artifactoryUrl/versions/$artifactoryRepository/$from"
+# . ./config.ps1
 
-$artifact_info = Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $artifactoryBase64AuthInfo)} `
-    -Method GET -UseBasicParsing `
-    -Uri $url
+# $url = "$artifactoryUrl/versions/$artifactoryRepository/$from"
 
-return $artifact_info.version
+# $artifact_info = Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $artifactoryBase64AuthInfo)} `
+#     -Method GET -UseBasicParsing `
+#     -Uri $url
+
+# return $artifact_info.version
