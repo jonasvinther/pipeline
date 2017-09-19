@@ -23,7 +23,7 @@ node('windows') {
 
             if(artifact_version <= latestT) {
                 currentBuild.result = 'ABORTED'
-                def error_msg = "The given artifact(v. ${artifact_version}) is older than the current running version(v. ${latestT})"
+                def error_msg = "The given artifact(ver. ${artifact_version}) is older than the current running artifact(ver. ${latestT})"
                 echo error_msg
                 error(error_msg)
             }
