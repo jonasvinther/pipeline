@@ -9,13 +9,15 @@ node('windows') {
         artifactoryRepository = 'demo-local'
         def artifactoryServer = Artifactory.server('artifactory')
         def artifact_version = 0
+        def from = 'Builds'
+        def to = 'T'
 
         stage('Preparation') {
             checkout scm
         }
 
         stage('Get latest artifact') {
-            artifact_version = getLatestArtifactVersion('S')
+            artifact_version = getLatestArtifactVersion(from)
 
             //def externalMethod = load(pwd() + "\\Pipeline\\utils\\utils.groovy")
             //def artifact_version = externalMethod.getLatestArtifactVersion('S')
@@ -27,7 +29,7 @@ node('windows') {
             def downloadSpec = """{
                 "files": [
                 {
-                    "pattern": "${artifactoryRepository}/S/package-${artifact_version}.zip",
+                    "pattern": "${artifactoryRepository}/${from}/package-${artifact_version}.zip",
                     "target": "Pipeline/artifacts/"
                     }
                 ]
@@ -37,14 +39,14 @@ node('windows') {
 
         stage('Expand archive') {
             def buildPath = pwd() + "\\Pipeline"
-            powershell(". '.\\Pipeline\\build_scripts\\ExpandArchive.ps1' ${artifact_version} ${buildPath}")
+            powershell(". '.\\Pipeline\\build_scripts\\ExpandArchive.ps1' ${artifact_version} ${buildPath}, ${from}")
         }
 
         stage('Deploy artifact') {
             // Deploy to env server
             def buildPath = pwd() + "\\Pipeline"
             echo buildPath
-            powershell(". '.\\Pipeline\\build_scripts\\deploy.ps1' ${artifact_version} ${buildPath}")
+            powershell(". '.\\Pipeline\\build_scripts\\Deploy.ps1' ${artifact_version} ${buildPath}")
         }
 
         stage('Integraiton test') {
@@ -53,7 +55,7 @@ node('windows') {
 
         stage('Promote artifact') {
             // Flyt kun artifact til ny mappe hvis deploy + test er gået godt
-            //moveArtifact(27, 'T', 'S')
+            moveArtifact(artifact_version, from, to)
         }
 
     }

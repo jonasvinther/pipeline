@@ -22,7 +22,7 @@ node('windows') {
             // Execute build script 
         }
 
-        stage('Test') {
+        stage('Unit tests') {
             // Execute unit tests
         }
 

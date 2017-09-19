@@ -1,6 +1,6 @@
 param(    
     [Parameter(Position=0)]
-    [ValidateSet('P','S','T')]
+    [ValidateSet('P','S','T','Builds')]
     [string] $from,
 
     [Parameter(Position=1)]

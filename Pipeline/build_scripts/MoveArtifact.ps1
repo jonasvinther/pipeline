@@ -4,11 +4,11 @@ param(
     [int] $build_number = $(Throw "Please specify build number"), 
     
     [Parameter(Position=1)]
-    [ValidateSet('P','S','T')]
+    [ValidateSet('P','S','T','Builds')]
     [string] $from,
     
     [Parameter(Position=2)]
-    [ValidateSet('P','S','T')]
+    [ValidateSet('P','S','T','Builds')]
     [string] $to,
 
     [Parameter(Position=3)]
