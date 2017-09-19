@@ -2,19 +2,20 @@ node('windows') {
     try {
 
         buildPath = pwd() + "\\Pipeline\\build"
+        buildScriptPath = pwd() + "\\Pipeline\\build_scripts"
 
         def commitId = ""
         def commitAuthorName = "none"
         def commitAuthorEmail = "none"
 
         def artifactoryServer = Artifactory.server('artifactory')
-
-        withCredentials([string(credentialsId: 'artifactory-url', variable: 'ARTIFACTORY_URL')]) {
-                def artifactoryApiPath = "http://${ARTIFACTORY_URL}/artifactory/api"
-        }
-        
-        def workspacePath = "C:/Jenkins/workspace/BD.build/WebApplication1"
         def artifactoryRepository = 'demo-local'
+
+        // withCredentials([string(credentialsId: 'artifactory-url', variable: 'ARTIFACTORY_URL')]) {
+        //         def artifactoryApiPath = "http://${ARTIFACTORY_URL}/artifactory/api"
+        // }
+        
+        // def workspacePath = "C:/Jenkins/workspace/BD.build/WebApplication1"
 
         stage('Preparation') {
             checkout scm
@@ -27,8 +28,12 @@ node('windows') {
             // Execute build script 
         }
 
-        stage('Archive') {
-            powershell(". '.\\Pipeline\\build_scripts\\CompressArchive.ps1' ${env.BUILD_NUMBER} ${buildPath}")
+        stage('Test') {
+            // Execute unit tests
+        }
+
+        stage('Compress archive') {
+            powershell(". '.${buildScriptPath}\\CompressArchive.ps1' ${env.BUILD_NUMBER} ${buildPath}")
         }
 
         stage('Upload to artifactory') {
@@ -36,7 +41,7 @@ node('windows') {
                 "files": [
                     {
                         "pattern": "${buildPath}/../package-${env.BUILD_NUMBER}.zip",
-                        "target": "${artifactoryRepository}/T/",
+                        "target": "${artifactoryRepository}/Builds/",
                         "props": "commit.id=${commitId};commit.author.name=${commitAuthorName};commit.author.email=${commitAuthorEmail};version=${env.BUILD_NUMBER}"
                     }
                 ]
