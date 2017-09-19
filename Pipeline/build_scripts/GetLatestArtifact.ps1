@@ -4,16 +4,12 @@ param(
     [string] $from,
 
     [Parameter(Position=1)]
-    [string] $artifactoryBase64AuthInfo,
-
-    [Parameter(Position=2)]
-    [string] $artifactoryApiPath,
-
-    [Parameter(Position=3)]
-    [string] $repository
+    [string] $artifactoryBase64AuthInfo
 )
 
-$url = "$artifactoryApiPath/versions/$repository/$from"
+. .\..\config.ps1
+
+$url = "$artifactoryUrl/versions/$artifactoryRepository/$from"
 
 $artifact_info = Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $artifactoryBase64AuthInfo)} `
     -Method GET -UseBasicParsing `

@@ -19,7 +19,7 @@ node('windows') {
         }
 
         stage('Get latest artifact') {
-            echo tmpLatestArtifact("${artifactoryUrl}/versions/${artifactoryRepository}/${from}")
+            // echo tmpLatestArtifact("${artifactoryUrl}/versions/${artifactoryRepository}/${from}")
             artifactVersion = getLatestArtifactVersion(from)
             def runningArtifactInT = getLatestArtifactVersion(to)
 
