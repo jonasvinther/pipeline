@@ -69,11 +69,11 @@ node('windows') {
         stage('Promote artifact') {
             // Flyt kun artifact til ny mappe hvis deploy + test er gået godt
             // moveArtifact(artifactVersion, from, to)
-            def url = "${artifactoryUrl}/move/${repository}/${from}/package-${artifactVersion}.zip?to=/${repository}/${to}/package-${artifactVersion}.zip"
-            echo url
+            // def url = "${artifactoryUrl}/move/${repository}/${from}/package-${artifactVersion}.zip?to=/${repository}/${to}/package-${artifactVersion}.zip"
+            echo "TEST"
 
-            def artifactoryAuth = generateArtifactoryAuthInfo()
-            powershell(". '${buildScriptPath}\\artifactory.ps1' 'POST' ${artifactoryAuth} ${url}")
+            // def artifactoryAuth = generateArtifactoryAuthInfo()
+            // powershell(". '${buildScriptPath}\\artifactory.ps1' 'POST' ${artifactoryAuth} ${url}")
         }
 
     }
