@@ -8,7 +8,11 @@ param(
 
     [Parameter(Position=2)]
     [ValidateSet('P','S','T','Builds')]
-    [string] $from
+    [string] $from,
+
+    [Parameter(Position=3)]
+    [ValidateSet('P','S','T','Builds')]
+    [string] $to
 )
 
-Copy-Item $build_path\artifacts\$from\package-$build_number\config\* $build_path\artifacts\$from\package-$build_number -Force
+Copy-Item $build_path\artifacts\$from\package-$build_number\config\$to* $build_path\artifacts\$from\package-$build_number\project -Force

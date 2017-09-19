@@ -43,7 +43,7 @@ node('windows') {
 
         stage('Select env files') {
             def buildPath = pwd() + "\\Pipeline"
-            powershell(". '.\\Pipeline\\build_scripts\\SetupEnv.ps1' ${artifact_version} ${buildPath} ${from}")
+            powershell(". '.\\Pipeline\\build_scripts\\SetupEnv.ps1' ${artifact_version} ${buildPath} ${from} ${to}")
         }
 
         stage('Deploy artifact') {
