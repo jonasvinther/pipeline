@@ -20,7 +20,7 @@ node('windows') {
 
         stage('Get latest artifact') {
             echo "TEST"
-            echo powershell(script: ". '${buildScriptPath}\\artifactory.ps1' 'GET' ${artifactoryAuth} ${url}", returnStdout: true).trim()
+            echo powershell(script: ". '${buildScriptPath}\\artifactory.ps1'", returnStdout: true).trim()
 
             // echo tmpLatestArtifact("${artifactoryUrl}/versions/${artifactoryRepository}/${from}")
             artifactVersion = getLatestArtifactVersion(from)
