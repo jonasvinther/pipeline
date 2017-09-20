@@ -7,7 +7,7 @@ param(
     [string] $artifactoryBase64AuthInfo
 )
 
-echo $PSScriptRoot
+echo "test $PSScriptRoot" 
 
 # . ./config.ps1
 
