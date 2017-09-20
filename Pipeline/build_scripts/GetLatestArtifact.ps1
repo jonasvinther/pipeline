@@ -13,7 +13,7 @@ param(
     [string] $repository
 )
 
-echo "Test"
+# echo "Test"
 
 $url = "$artifactoryApiPath/versions/$repository/$from"
 
