@@ -19,8 +19,8 @@ node('windows') {
         }
 
         stage('Get latest artifact') {
-            echo "TEST"
-            echo powershell(script: ". '${buildScriptPath}\\artifactory.ps1'", returnStdout: true).trim()
+            // echo "TEST"
+            // echo powershell(script: ". '${buildScriptPath}\\artifactory.ps1'", returnStdout: true).trim()
 
             // echo tmpLatestArtifact("${artifactoryUrl}/versions/${artifactoryRepository}/${from}")
             artifactVersion = getLatestArtifactVersion(from)
@@ -113,5 +113,5 @@ def tmpLatestArtifact(url) {
 
 def getLatestArtifactVersion(from) {
     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
-    return powershell(script: ". '${buildScriptPath}\\GetLatestArtifact.ps1' ${from} ${artifactoryBase64AuthInfo} ${artifactoryUrl} ${artifactoryRepository}", returnStdout: true).trim()
+    return powershell(script: ". '${buildScriptPath}\\GetLatestArtifact.ps1' ${from} ${artifactoryBase64AuthInfo}", returnStdout: true).trim()
 }

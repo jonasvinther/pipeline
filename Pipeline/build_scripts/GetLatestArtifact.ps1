@@ -4,18 +4,13 @@ param(
     [string] $from,
 
     [Parameter(Position=1)]
-    [string] $artifactoryBase64AuthInfo,
-
-    [Parameter(Position=2)]
-    [string] $artifactoryApiPath,
-
-    [Parameter(Position=3)]
-    [string] $repository
+    [string] $artifactoryBase64AuthInfo
 )
 
-# echo "Test"
+$ScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
+. "$ScriptDirectory\config.ps1"
 
-$url = "$artifactoryApiPath/versions/$repository/$from"
+$url = "$artifactoryUrl/versions/$artifactoryRepository/$from"
 
 $artifact_info = Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $artifactoryBase64AuthInfo)} `
     -Method GET -UseBasicParsing `
