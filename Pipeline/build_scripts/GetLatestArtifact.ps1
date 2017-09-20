@@ -13,7 +13,6 @@ param(
     [string] $repository
 )
 
-echo Split-Path -parent $MyInvocation.MyCommand.Definition
 $url = "$artifactoryApiPath/versions/$repository/$from"
 
 $artifact_info = Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $artifactoryBase64AuthInfo)} `
