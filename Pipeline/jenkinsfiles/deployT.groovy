@@ -67,7 +67,7 @@ node('windows') {
         stage('Promote artifact') {
             // Flyt kun artifact til ny mappe hvis deploy + test er gået godt
             // moveArtifact(artifactVersion, from, to)
-            powershell(". '${buildScriptPath}\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryAuthInfo}")
+            powershell(". '${buildScriptPath}\\MoveArtifact.ps1' ${artifactVersion} ${from} ${to} ${artifactoryAuthInfo}")
         }
 
     }
