@@ -1,0 +1,3 @@
+build_scripts/Build.ps1
+build_scripts/Deploy.ps1
+config.ps1
