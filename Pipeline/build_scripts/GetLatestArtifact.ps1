@@ -7,7 +7,7 @@ param(
     [string] $artifactoryBase64AuthInfo
 )
 
-echo pwd()
+echo $PSScriptRoot
 
 # . ./config.ps1
 
