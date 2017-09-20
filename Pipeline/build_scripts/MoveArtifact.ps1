@@ -12,16 +12,13 @@ param(
     [string] $to,
 
     [Parameter(Position=3)]
-    [string] $artifactoryBase64AuthInfo,
-
-    [Parameter(Position=4)]
-    [string] $artifactoryApiPath,
-
-    [Parameter(Position=5)]
-    [string] $repository
+    [string] $artifactoryBase64AuthInfo
 )
 
-$url = "$artifactoryApiPath/move/$repository/$from/package-$build_number.zip?to=/$repository/$to/package-$build_number.zip"
+$ScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
+. "$ScriptDirectory\config.ps1"
+
+$url = "$artifactoryUrl/move/$artifactoryRepository/$from/package-$build_number.zip?to=/$artifactoryRepository/$to/package-$build_number.zip"
 
 Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $artifactoryBase64AuthInfo)} `
     -Method POST -UseBasicParsing `

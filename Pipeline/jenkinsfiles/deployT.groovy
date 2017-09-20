@@ -1,9 +1,9 @@
 node('windows') {
     try {
 
-        artifactoryUrl = withCredentials([string(credentialsId: 'artifactory-url', variable: 'ARTIFACTORY_URL')]) {
-            return "http://${ARTIFACTORY_URL}/artifactory/api"
-        }
+        // artifactoryUrl = withCredentials([string(credentialsId: 'artifactory-url', variable: 'ARTIFACTORY_URL')]) {
+        //     return "http://${ARTIFACTORY_URL}/artifactory/api"
+        // }
 
         buildScriptPath = pwd() + "\\Pipeline\\build_scripts"
         artifactoryRepository = 'demo-local'
@@ -19,10 +19,6 @@ node('windows') {
         }
 
         stage('Get latest artifact') {
-            // echo "TEST"
-            // echo powershell(script: ". '${buildScriptPath}\\artifactory.ps1'", returnStdout: true).trim()
-
-            // echo tmpLatestArtifact("${artifactoryUrl}/versions/${artifactoryRepository}/${from}")
             artifactVersion = getLatestArtifactVersion(from)
             def runningArtifactInT = getLatestArtifactVersion(to)
 
@@ -73,10 +69,7 @@ node('windows') {
 
         stage('Promote artifact') {
             // Flyt kun artifact til ny mappe hvis deploy + test er gået godt
-            // moveArtifact(artifactVersion, from, to)
-            def url = "${artifactoryUrl}/move/${artifactoryRepository}/${from}/package-${artifactVersion}.zip?to=/${artifactoryRepository}/${to}/package-${artifactVersion}.zip"
-
-            powershell(". '${buildScriptPath}\\artifactory.ps1' 'POST' ${artifactoryAuth} ${url}")
+            moveArtifact(artifactVersion, from, to)
         }
 
     }
@@ -104,11 +97,7 @@ def generateArtifactoryAuthInfo() {
 
 def moveArtifact(buildNumber, from, to) {
     def artifactoryBase64AuthInfo = generateArtifactoryAuthInfo()
-    powershell(". '${buildScriptPath}\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo} ${artifactoryUrl} ${artifactoryRepository}")
-}
-
-def tmpLatestArtifact(url) {
-    return powershell(script: ". '${buildScriptPath}\\artifactory.ps1' 'GET' ${artifactoryAuth} ${url}")
+    powershell(". '${buildScriptPath}\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryBase64AuthInfo}")
 }
 
 def getLatestArtifactVersion(from) {
