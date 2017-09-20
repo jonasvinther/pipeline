@@ -7,10 +7,11 @@ node('windows') {
 
         buildScriptPath = pwd() + "\\Pipeline\\build_scripts"
         artifactoryRepository = 'demo-local'
-        artifactoryAuth = generateArtifactoryAuthInfo()
 
         def artifactoryServer = Artifactory.server('artifactory')
+        def artifactoryAuthInfo = generateArtifactoryAuthInfo()
         def artifactVersion = 0
+        def buildPath = pwd() + "\\Pipeline"
         def from = 'Builds'
         def to = 'T'
 
@@ -48,18 +49,14 @@ node('windows') {
         }
 
         stage('Expand archive') {
-            def buildPath = pwd() + "\\Pipeline"
             powershell(". '${buildScriptPath}\\ExpandArchive.ps1' ${artifactVersion} ${buildPath} ${from}")
         }
 
         stage('Select env files') {
-            def buildPath = pwd() + "\\Pipeline"
             powershell(". '${buildScriptPath}\\SetupEnv.ps1' ${artifactVersion} ${buildPath} ${from} ${to}")
         }
 
         stage('Deploy artifact') {
-            // Deploy to env server
-            def buildPath = pwd() + "\\Pipeline"
             powershell(". '${buildScriptPath}\\Deploy.ps1' ${artifactVersion} ${buildPath} ${from}")
         }
 
@@ -69,7 +66,8 @@ node('windows') {
 
         stage('Promote artifact') {
             // Flyt kun artifact til ny mappe hvis deploy + test er gået godt
-            moveArtifact(artifactVersion, from, to)
+            // moveArtifact(artifactVersion, from, to)
+            powershell(". '${buildScriptPath}\\MoveArtifact.ps1' ${buildNumber} ${from} ${to} ${artifactoryAuthInfo}")
         }
 
     }
