@@ -4,17 +4,19 @@ param(
     [string] $from,
 
     [Parameter(Position=1)]
-    [string] $artifactoryBase64AuthInfo
+    [string] $artifactoryBase64AuthInfo,
+
+    [Parameter(Position=2)]
+    [string] $artifactoryApiPath,
+
+    [Parameter(Position=3)]
+    [string] $repository
 )
 
-echo "test $PSScriptRoot" 
+$url = "$artifactoryApiPath/versions/$repository/$from"
 
-# . ./config.ps1
+$artifact_info = Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $artifactoryBase64AuthInfo)} `
+    -Method GET -UseBasicParsing `
+    -Uri $url
 
-# $url = "$artifactoryUrl/versions/$artifactoryRepository/$from"
-
-# $artifact_info = Invoke-RestMethod -Headers @{Authorization=('Basic {0}' -f $artifactoryBase64AuthInfo)} `
-#     -Method GET -UseBasicParsing `
-#     -Uri $url
-
-# return $artifact_info.version
+return $artifact_info.version
